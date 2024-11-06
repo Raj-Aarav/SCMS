@@ -110,6 +110,44 @@
 
 // export default AuthProvider;
 
+// // src/context/AuthContext.js
+// import React, { createContext, useContext, useState, useEffect } from 'react';
+// import AuthService from '../services/AuthService';
+
+// const AuthContext = createContext();
+
+// export const useAuth = () => useContext(AuthContext);
+
+// export const AuthProvider = ({ children }) => {
+//     const [role, setRole] = useState(localStorage.getItem('role'));
+
+//     const login = async (email, password) => {
+//         const data = await AuthService.login(email, password);
+//         setRole(data.role);
+//         localStorage.setItem('token', data.token);
+//     };
+
+//     const logout = () => {
+//         AuthService.logout();
+//         setRole(null);
+//         localStorage.removeItem('token');
+//     };
+
+//     useEffect(() => {
+//         if (!AuthService.getToken()) {
+//             setRole(null);
+//         }
+//     }, []);
+
+//     return (
+//         <AuthContext.Provider value={{ role, login, logout }}>
+//             {children}
+//         </AuthContext.Provider>
+//     );
+// };
+
+// export default AuthProvider;
+
 // src/context/AuthContext.js
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AuthService from '../services/AuthService';
@@ -119,18 +157,22 @@ const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-    const [role, setRole] = useState(localStorage.getItem('role'));
+    const [role, setRole] = useState(localStorage.getItem('role') || null);
 
     const login = async (email, password) => {
-        const data = await AuthService.login(email, password);
-        setRole(data.role);
-        localStorage.setItem('token', data.token);
+        try {
+            const data = await AuthService.login(email, password);
+            setRole(data.role);
+            localStorage.setItem('role', data.role); // Ensure the role is also saved
+        } catch (error) {
+            console.error('Login failed', error);
+            // Handle error display or state updates as needed
+        }
     };
 
     const logout = () => {
         AuthService.logout();
         setRole(null);
-        localStorage.removeItem('token');
     };
 
     useEffect(() => {
