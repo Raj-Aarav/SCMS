@@ -295,6 +295,9 @@ const CommonDashboardControls = ({ role }) => {
                     {/* Conditional Rendering for User Management Section */}
                     {showUserManagement && <UserManagement />}
                 </div>
+            
+            
+                
             )}
         </div>
     );
