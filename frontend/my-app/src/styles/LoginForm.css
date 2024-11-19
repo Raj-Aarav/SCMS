@@ -1,0 +1,105 @@
+/* src/styles/LoginForm.css
+
+.login-form-container {
+    max-width: 400px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: var(--border-radius);
+}
+
+.login-form-container h2 {
+    text-align: center;
+}
+
+.login-form-container input,
+.login-form-container button {
+    width: 100%;
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--input-border-color);
+}
+
+.login-form-container input:focus {
+    border-color: var(--input-focus-color);
+    outline: none;
+}
+
+.login-form-container button {
+    background-color: var(--button-color);
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+.login-form-container button:hover {
+    background-color: darken(var(--button-color), 10%);
+} */
+
+.login-form-container {
+    max-width: 450px;
+    width: 100%;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: white;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    transition: box-shadow var(--transition-duration);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-form-container:hover {
+    box-shadow: var(--box-shadow-hover);
+}
+
+.login-form-container h2 {
+    text-align: center;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+/* Input Fields */
+.login-form-container input {
+    width: 90%;
+    margin: 0.5rem 0;
+    padding: 0.9rem;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--input-border-color);
+    transition: background-color var(--transition-duration), border-color var(--transition-duration);
+}
+
+.login-form-container input:hover {
+    background-color: var(--input-hover-color);
+}
+
+.login-form-container input:focus {
+    border-color: var(--input-focus-color);
+    outline: none;
+}
+
+/* Button */
+.login-form-container button {
+    width: 90%;
+    padding: 0.9rem;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    background-color: var(--button-color);
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--transition-duration), transform var(--transition-duration);
+    margin-top: 1rem;
+}
+
+.login-form-container button:hover {
+    background-color: var(--button-hover-color);
+    transform: scale(1.05);
+}

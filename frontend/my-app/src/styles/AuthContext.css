@@ -1,0 +1,24 @@
+/* src/styles/AuthContext.css
+
+.auth-message {
+    text-align: center;
+    color: var(--primary-color);
+    margin: 1rem;
+    font-weight: bold;
+} */
+
+/* src/styles/AuthContext.css */
+
+.auth-message {
+    text-align: center;
+    color: var(--primary-color);
+    margin: 1rem;
+    font-weight: bold;
+    animation: highlight var(--transition-duration) ease-in-out;
+}
+
+/* Highlight animation */
+@keyframes highlight {
+    from { background-color: #e6f7ff; }
+    to { background-color: transparent; }
+}

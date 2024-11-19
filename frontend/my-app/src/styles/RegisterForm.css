@@ -1,0 +1,109 @@
+/* src/styles/RegisterForm.css
+
+.register-form-container {
+    max-width: 500px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: var(--border-radius);
+}
+
+.register-form-container input,
+.register-form-container button,
+.register-form-container select {
+    width: 100%;
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--input-border-color);
+}
+
+.register-form-container input:focus,
+.register-form-container select:focus {
+    border-color: var(--input-focus-color);
+    outline: none;
+}
+
+.register-form-container button {
+    background-color: var(--button-color);
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+.register-form-container button:hover {
+    background-color: darken(var(--button-color), 10%);
+} */
+
+/* src/styles/RegisterForm.css */
+/* src/styles/RegisterForm.css */
+
+.register-form-container {
+    max-width: 500px;
+    width: 100%;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: rgb(239, 233, 58);
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+    transition: box-shadow var(--transition-duration);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.register-form-container:hover {
+    box-shadow: var(--box-shadow-hover);
+}
+
+.register-form-container h2 {
+    text-align: center;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+}
+
+/* Input Fields and Select */
+.register-form-container input,
+.register-form-container select {
+    width: 90%;
+    margin: 0.5rem 0;
+    padding: 0.9rem;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--input-border-color);
+    transition: background-color var(--transition-duration), border-color var(--transition-duration);
+}
+
+.register-form-container input:hover,
+.register-form-container select:hover {
+    background-color: var(--input-hover-color);
+}
+
+.register-form-container input:focus,
+.register-form-container select:focus {
+    border-color: var(--input-focus-color);
+    outline: none;
+}
+
+/* Button */
+.register-form-container button {
+    width: 90%;
+    padding: 0.9rem;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    background-color: var(--button-color);
+    color: rgb(220, 92, 92);
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--transition-duration), transform var(--transition-duration);
+    margin-top: 1rem;
+}
+
+.register-form-container button:hover {
+    background-color: var(--button-hover-color);
+    transform: scale(1.05);
+}
