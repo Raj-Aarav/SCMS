@@ -164,7 +164,7 @@ const SupplierManagement = () => {
 
     return (
         <div>
-            <h3>Supplier Management</h3>
+            <h1>Supplier Management</h1>
             
             <AddSupplierForm onAdd={fetchSuppliers} />
             

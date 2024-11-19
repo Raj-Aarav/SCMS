@@ -38,7 +38,7 @@ const SupplierSearch = ({ onSearch }) => {
         <form onSubmit={handleSearch}>
             <input
                 type="text"
-                placeholder="Search by Supplier Name or ID"
+                placeholder="Search by Supplier Name"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
