@@ -152,6 +152,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import AuthService from '../services/AuthService';
 
+import '../styles/AuthContext.css';
+
 const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
