@@ -115,6 +115,9 @@
 import React, { useState } from 'react';
 import AuthService from '../services/AuthService';
 
+import '../styles/RegisterForm.css';
+
+
 const RegisterForm = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');

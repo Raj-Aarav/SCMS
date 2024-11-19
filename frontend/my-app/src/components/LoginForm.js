@@ -1,6 +1,7 @@
 // src/components/LoginForm.js
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import '../styles/LoginForm.css'; // Import the CSS
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');

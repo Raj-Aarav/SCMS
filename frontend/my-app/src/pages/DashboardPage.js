@@ -21,6 +21,7 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import CommonDashboardControls from '../components/CommonDashboardControls';
+import ManagerDashboardControls from '../components/ManagerDashboardControls'; // New Manager-specific controls
 
 const DashboardPage = () => {
     const { role } = useAuth(); // Get the role from AuthContext
@@ -29,6 +30,9 @@ const DashboardPage = () => {
         <div className="dashboard-page">
             <CommonDashboardControls role={role} />
             {role === 'admin'}
+
+            {/* Manager-specific controls */}
+            {role === 'manager' && <ManagerDashboardControls />}
         </div>
     );
 };
