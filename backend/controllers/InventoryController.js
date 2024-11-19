@@ -525,9 +525,137 @@
 // };
 
 
+// // controllers/InventoryController.js
+
+// const { Op, fn, col } = require('sequelize');
+// const Inventory = require('../models/Inventory');
+// const Supplier = require('../models/Supplier');
+
+// // Fetch all inventory items with supplier details
+// const getInventory = async (req, res) => {
+//     try {
+//         const inventory = await Inventory.findAll({
+//             include: {
+//                 model: Supplier,
+//                 attributes: ['name'], // Only fetch supplier name
+//             },
+//         });
+//         res.status(200).json(inventory);
+//     } catch (error) {
+//         console.error('Error fetching inventory:', error);
+//         res.status(500).json({ message: 'Error fetching inventory', error });
+//     }
+// };
+// // Add a new product to the inventory using supplier_name
+// const addProduct = async (req, res) => {
+//     const { product_name, quantity, price, supplier_name } = req.body;
+
+//     try {
+//         // Find the supplier by name (MySQL does not support ILIKE, so we use LOWER for case-insensitive search)
+//         const supplier = await Supplier.findOne({
+//             where: {
+//                 name: {
+//                     [Op.like]: `%${supplier_name}%`,  // Use LIKE for case-insensitive search in MySQL
+//                 },
+//             },
+//         });
+
+//         if (!supplier) {
+//             return res.status(404).json({ message: 'Supplier not found' });
+//         }
+
+//         // Add the product to the inventory using the supplier's id
+//         const newProduct = await Inventory.create({
+//             product_name,
+//             quantity,
+//             price,
+//             supplier_id: supplier.supplier_id, // Use supplier's ID
+//         });
+
+//         res.status(201).json(newProduct);
+//     } catch (error) {
+//         console.error('Error adding product:', error.message); // Log error
+//         res.status(500).json({ message: 'Error adding product', error: error.message });
+//     }
+// };
+
+// // Update an existing inventory item
+// const updateItem = async (req, res) => {
+//     const { item_id } = req.params;
+//     const { product_name, quantity, price, supplier_name } = req.body;
+
+//     try {
+//         const item = await Inventory.findByPk(item_id);
+//         if (!item) return res.status(404).json({ message: 'Item not found' });
+
+//         // Find and set supplier_id if supplier_name is provided
+//         if (supplier_name) {
+//             const supplier = await Supplier.findOne({
+//                 where: { name: { [Op.iLike]: supplier_name } },
+//             });
+//             if (!supplier) return res.status(404).json({ message: 'Supplier not found' });
+//             item.supplier_id = supplier.supplier_id;
+//         }
+
+//         // Update other fields
+//         item.product_name = product_name || item.product_name;
+//         item.quantity = quantity !== undefined ? quantity : item.quantity;
+//         item.price = price !== undefined ? price : item.price;
+
+//         await item.save();
+//         res.status(200).json({ message: 'Item updated successfully', item });
+//     } catch (error) {
+//         console.error('Error updating item:', error);
+//         res.status(500).json({ message: 'Error updating item', error });
+//     }
+// };
+
+// // Increment stock for an inventory item
+// const updateStock = async (req, res) => {
+//     const { itemId, quantity } = req.body;
+
+//     try {
+//         const item = await Inventory.findByPk(itemId);
+//         if (!item) return res.status(404).json({ message: 'Item not found' });
+
+//         item.quantity += quantity; // Increment quantity
+//         await item.save();
+
+//         res.status(200).json({ message: 'Stock updated successfully', item });
+//     } catch (error) {
+//         console.error('Error updating stock:', error);
+//         res.status(500).json({ message: 'Error updating stock', error });
+//     }
+// };
+
+// // Search for products by name with supplier details
+// const searchProduct = async (req, res) => {
+//     const { name } = req.query;
+
+//     try {
+//         const products = await Inventory.findAll({
+//             where: { product_name: { [Op.like]: `%${name}%` } },
+//             include: { model: Supplier, attributes: ['name'] },
+//         });
+//         res.status(200).json(products);
+//     } catch (error) {
+//         console.error('Error searching products:', error);
+//         res.status(500).json({ message: 'Error searching products', error });
+//     }
+// };
+
+// // Export functions for use in routes
+// module.exports = {
+//     getInventory,
+//     addProduct,
+//     updateItem,
+//     updateStock,
+//     searchProduct,
+// };
+
 // controllers/InventoryController.js
-// const { Op } = require('sequelize');
-const { Op, fn, col } = require('sequelize');
+
+const { Op } = require('sequelize');
 const Inventory = require('../models/Inventory');
 const Supplier = require('../models/Supplier');
 
@@ -546,16 +674,17 @@ const getInventory = async (req, res) => {
         res.status(500).json({ message: 'Error fetching inventory', error });
     }
 };
-// Add a new product to the inventory using supplier_name
+
+// Add or update a product in the inventory using supplier_name
 const addProduct = async (req, res) => {
     const { product_name, quantity, price, supplier_name } = req.body;
 
     try {
-        // Find the supplier by name (MySQL does not support ILIKE, so we use LOWER for case-insensitive search)
+        // Find the supplier by name
         const supplier = await Supplier.findOne({
             where: {
                 name: {
-                    [Op.like]: `%${supplier_name}%`,  // Use LIKE for case-insensitive search in MySQL
+                    [Op.like]: `%${supplier_name}%`, // Use LIKE for case-insensitive search in MySQL
                 },
             },
         });
@@ -564,22 +693,39 @@ const addProduct = async (req, res) => {
             return res.status(404).json({ message: 'Supplier not found' });
         }
 
-        // Add the product to the inventory using the supplier's id
-        const newProduct = await Inventory.create({
-            product_name,
-            quantity,
-            price,
-            supplier_id: supplier.supplier_id, // Use supplier's ID
+        // Check if the product already exists with the same supplier_id
+        let existingProduct = await Inventory.findOne({
+            where: {
+                product_name,
+                supplier_id: supplier.supplier_id
+            }
         });
 
-        res.status(201).json(newProduct);
+        if (existingProduct) {
+            // Update existing product
+            existingProduct.quantity += quantity; // Increment quantity by the entered amount
+            existingProduct.price = price; // Update the price to the new value
+            await existingProduct.save();
+
+            return res.status(200).json({ message: 'Product updated successfully', product: existingProduct });
+        } else {
+            // Create a new product entry if not found
+            const newProduct = await Inventory.create({
+                product_name,
+                quantity,
+                price,
+                supplier_id: supplier.supplier_id, // Use supplier's ID
+            });
+
+            return res.status(201).json({ message: 'Product added successfully', product: newProduct });
+        }
     } catch (error) {
-        console.error('Error adding product:', error.message); // Log error
-        res.status(500).json({ message: 'Error adding product', error: error.message });
+        console.error('Error adding/updating product:', error.message);
+        res.status(500).json({ message: 'Error adding/updating product', error: error.message });
     }
 };
 
-// Update an existing inventory item
+// Update an existing inventory item by item_id
 const updateItem = async (req, res) => {
     const { item_id } = req.params;
     const { product_name, quantity, price, supplier_name } = req.body;
@@ -591,7 +737,7 @@ const updateItem = async (req, res) => {
         // Find and set supplier_id if supplier_name is provided
         if (supplier_name) {
             const supplier = await Supplier.findOne({
-                where: { name: { [Op.iLike]: supplier_name } },
+                where: { name: { [Op.like]: `%${supplier_name}%` } }, // Case-insensitive search
             });
             if (!supplier) return res.status(404).json({ message: 'Supplier not found' });
             item.supplier_id = supplier.supplier_id;
