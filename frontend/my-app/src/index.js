@@ -20,9 +20,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import './styles/Login.css';        // Optional: Styling for the login page
-import './styles/Register.css';     // Optional: Styling for the registration page
-import './styles/Dashboard.css';    // Optional: Styling for the dashboard
+// import './styles/Login.css';        // Optional: Styling for the login page
+// import './styles/Register.css';     // Optional: Styling for the registration page
+// import './styles/Dashboard.css';    // Optional: Styling for the dashboard
 
 ReactDOM.render(
     <React.StrictMode>

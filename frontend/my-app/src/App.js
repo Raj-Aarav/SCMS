@@ -108,6 +108,9 @@ import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
+import './styles/global.css';
+
+
 // PrivateRoute now checks for specific roles
 const PrivateRoute = ({ children, roles }) => {
     const { role } = useAuth();
